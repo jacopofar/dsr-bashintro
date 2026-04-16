@@ -1,637 +1,402 @@
 ---
 # try also 'default' to start simple
-theme: seriph
+theme: default
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-background: https://cover.sli.dev
+# background: https://cover.sli.dev
 # some information about your slides (markdown enabled)
-title: Welcome to Slidev
+title: "Bash and the UNIX command line"
 info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
+  made for Data Science Retreat
+  by Jacopo Farina
 
-  Learn more at [Sli.dev](https://sli.dev)
-# apply UnoCSS classes to the current slide
+  Based on [Sli.dev](https://sli.dev)
+# apply unocss classes to the current slide
 class: text-center
 # https://sli.dev/features/drawing
 drawings:
   persist: false
 # slide transition: https://sli.dev/guide/animations.html#slide-transitions
 transition: slide-left
+# enable MDC Syntax: https://sli.dev/features/mdc
+mdc: true
+# to serve statically without that awful history manipulation
+routerMode: hash
 # enable Comark Syntax: https://comark.dev/syntax/markdown
 comark: true
 # duration of the presentation
-duration: 35min
+duration: 240min
 ---
-
-# Welcome to Slidev
-
-Presentation slides for developers
-
-<div @click="$slidev.nav.next" class="mt-12 py-1" hover:bg="white op-10">
-  Press Space for next page <carbon:arrow-right />
-</div>
-
-<div class="abs-br m-6 text-xl">
-  <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="slidev-icon-btn">
-    <carbon:edit />
-  </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" class="slidev-icon-btn">
-    <carbon:logo-github />
-  </a>
-</div>
-
-<!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
--->
-
----
-transition: fade-out
----
-
-# What is Slidev?
-
-Slidev is a slides maker and presenter designed for developers, consist of the following features
-
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - themes can be shared and re-used as npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embed Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export to PDF, PPTX, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - virtually anything that's possible on a webpage is possible in Slidev
-<br>
-<br>
-
-Read more about [Why Slidev?](https://sli.dev/guide/why)
-
-<!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/features/slide-scope-style
--->
 
 <style>
 h1 {
   background-color: #2B90B6;
   background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
   background-size: 100%;
+  background-clip: text;
   -webkit-background-clip: text;
   -moz-background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
 }
+
+.slidev-layout h1 + p {
+  opacity: 0.9;
+}
 </style>
 
-<!--
-Here is another comment.
--->
+# Bash and the UNIX-like command line
 
----
-transition: slide-up
-level: 2
+Jacopo Farina 
+@ Data Science Retreat
 ---
 
-# Navigation
+# What is a shell
 
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/ui#navigation-bar)
+The "original" way to interact with a computer, still relevant today!
 
-## Keyboard Shortcuts
+* Usually the fastest way to do things
+* Necessary to work on servers
+* Whatever you can do from the terminal, can later be automated
 
-|                                                     |                             |
-| --------------------------------------------------- | --------------------------- |
-| <kbd>right</kbd> / <kbd>space</kbd>                 | next animation or slide     |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd>                                       | previous slide              |
-| <kbd>down</kbd>                                     | next slide                  |
-
-<!-- https://sli.dev/guide/animations.html#click-animation -->
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-  alt=""
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
-
----
-layout: two-cols
-layoutClass: gap-16
----
-
-# Table of contents
-
-You can use the `Toc` component to generate a table of contents for your slides:
-
-```html
-<Toc minDepth="1" maxDepth="1" />
+```python
+from os import system
+>>> system('whoami')
+jacopo
+0
+>>> system('uptime')
+ 15:46:56 up  5:28,  1 user,  load average: 3.36, 3.55, 3.76
 ```
 
-The title will be inferred from your slide content, or you can override it with `title` and `level` in your frontmatter.
+(for fancier ways to run commands from Python, you can look at the `subprocess` module).
 
-::right::
-
-<Toc text-sm minDepth="1" maxDepth="2" />
+Often in documentation a `$` prefix indicates that a command is for the shell. `#` indicates a shell running as an administrator (or with `sudo`).
 
 ---
-layout: image-right
-image: https://cover.sli.dev
+
+# Your shell
+
+We call the class `Bash` but it's one of the possible command-line interpreters. `ZSH` is also very common (the default on macOS).
+The differences are minimal for most uses and we don't really mind, you can install more and switch.
+
+Also, you will notice that the string on the side in the terminal, called **prompt**, is different across OS and settings. It also does
+not matter and can be configured.
+
+On ZSH you may get a nicer configuration by installing `oh-mz-zsh` (but don't do it now!).
+
+The system shell, like the Python one, follows the REPL approach.
+
+* Read (what you type after the prompt)
+* Evaluate (that is, run the command)
+* Print (the output)
+* Loop (back to the beginning)
+
 ---
 
-# Code
+# Important Keys
 
-Use code snippets and get the highlighting directly, and even types hover!
+|                                              |                                       |
+| -------------------------------------------- | --------------------------------------|
+| <kbd>Ctrl + C</kbd>                          | Empties the line / stops the program  |
+| <kbd>Ctrl + D</kbd>                          | Quits                                 |
+| <kbd>up</kbd>/<kbd>down</kbd>                | Retrieve previous commands            |
+| <kbd>page up</kbd>/<kbd>page down</kbd>      | Same but with prefix                  |       
+| <kbd>Ctrl + R</kbd>                          | Searches in command history           |
+| <kbd>tab</kbd>                               | AUTOCOMPLETION!                       |
 
-```ts [filename-example.ts] {all|4|6|6-7|9|all} twoslash
-// TwoSlash enables TypeScript hover information
-// and errors in markdown code blocks
-// More at https://shiki.style/packages/twoslash
-import { computed, ref } from 'vue'
+The Python shell and others share most of the same keys.
 
-const count = ref(0)
-const doubled = computed(() => count.value * 2)
+You can get a fancier command search with **atuin** and record your sessions with **asciinema**.
 
-doubled.value = 2
+---
+
+# Your bestest friend!
+![the tab key](/Tabts.jpg)
+
+Like in an IDE or in Jupyter, the tab key does autocomplete. **Get used to it!**
+
+Not only it saves time which is always nice, but prevents many mistakes. The suggestions are contextual, and apply to **filenames** too. If you are running a command on a file with a long name you avoid typos and avoid wasting time on it. Win-win!
+
+Try it now: run the command `whoami` but don't write all of it, only the beginning.
+
+Depending on your system, pressing tab multiple time will show all possible completions or iterate over them.
+
+---
+
+# Getting help
+
+You can get a quick overview of what a command does by adding `--help` after it (e.g. `whoami --help`).
+
+In most systems you can get a detailed explanation of a command with `man <command name>`, and you are sure the documentation is for your exact version of it.
+
+
+---
+
+# The filesystem
+
+At any point in time the terminal, like any other process, is "pointing" to a specific folder called working directory.
+Commands will have an effect on it.
+
+You can see where you are by typing `pwd` (Print Working Directory).
+
+FYI Python has the same concept:
+
+```python
+>>> import os
+>>> os.getcwd()
+'/home/jacopo/projects/bashintro'
 ```
 
-<arrow v-click="[4, 5]" x1="350" y1="310" x2="195" y2="342" color="#953" width="2" arrowSize="1" />
+if you use `open('aaa.txt')` in Python, that folder is the one it will use to locate `aaa.txt`.
 
-<!-- This allow you to embed external code blocks -->
-<<< @/snippets/external.ts#snippet
+---
 
-<!-- Footer -->
-
-[Learn more](https://sli.dev/features/line-highlighting)
-
-<!-- Inline style -->
+# Paths
 <style>
-.footnotes-sep {
-  @apply mt-5 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
+  img {max-width: 40%}
 </style>
+![the FS tree](/fs_tree.png)
 
-<!--
-Notes can also sync with clicks
+All files and folders are arranged into a tree.
 
-[click] This will be highlighted after the first click
+A path starting with `/` is *absolute*. Otherwise it is relative to the working directory.
 
-[click] Highlighted with `count = ref(0)`
+With "`..`" you can indicate the "upper" folder. "`.`" indicates the current folder.
 
-[click:3] Last click (skip two clicks)
--->
-
----
-level: 2
----
-
-# Shiki Magic Move
-
-Powered by [shiki-magic-move](https://shiki-magic-move.netlify.app/), Slidev supports animations across multiple code snippets.
-
-Add multiple code blocks and wrap them with <code>````md magic-move</code> (four backticks) to enable the magic move. For example:
-
-````md magic-move {lines: true}
-```ts {*|2|*}
-// step 1
-const author = reactive({
-  name: 'John Doe',
-  books: [
-    'Vue 2 - Advanced Guide',
-    'Vue 3 - Basic Guide',
-    'Vue 4 - The Mystery'
-  ]
-})
-```
-
-```ts {*|1-2|3-4|3-4,8}
-// step 2
-export default {
-  data() {
-    return {
-      author: {
-        name: 'John Doe',
-        books: [
-          'Vue 2 - Advanced Guide',
-          'Vue 3 - Basic Guide',
-          'Vue 4 - The Mystery'
-        ]
-      }
-    }
-  }
-}
-```
-
-```ts
-// step 3
-export default {
-  data: () => ({
-    author: {
-      name: 'John Doe',
-      books: [
-        'Vue 2 - Advanced Guide',
-        'Vue 3 - Basic Guide',
-        'Vue 4 - The Mystery'
-      ]
-    }
-  })
-}
-```
-
-Non-code blocks are ignored.
-
-```vue
-<!-- step 4 -->
-<script setup>
-const author = {
-  name: 'John Doe',
-  books: [
-    'Vue 2 - Advanced Guide',
-    'Vue 3 - Basic Guide',
-    'Vue 4 - The Mystery'
-  ]
-}
-</script>
-```
-````
+"`/home/andrew/Documents/../../john`" here refers to "`/home/john/`"
 
 ---
 
-# Components
+# Moving around
 
-<div grid="~ cols-2 gap-4">
-<div>
+Use `cd` (Change Directory) to change working directory.
 
-You can use Vue components directly inside your slides.
-
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
-```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
-</div>
-<div>
-
-```html
-<Tweet id="1390115482657726468" />
-```
-
-<Tweet id="1390115482657726468" scale="0.65" />
-
-</div>
-</div>
-
-<!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
--->
-
----
-class: px-20
----
-
-# Themes
-
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
-
-<div grid="~ cols-2 gap-2" m="t-2">
-
-```yaml
----
-theme: default
----
-```
-
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true" alt="">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true" alt="">
-
-</div>
-
-Read more about [How to use a theme](https://sli.dev/guide/theme-addon#use-theme) and
-check out the [Awesome Themes Gallery](https://sli.dev/resources/theme-gallery).
+* `cd Documents` goes to the Documents folder (remember: autocompletion! Just write "Doc" and let it complete)
+* `cd` alone goes back to your home folder (same as `cd ~`)
+* `cd ..` goes up in the tree
+* `cd -` goes back to the previous location
 
 ---
 
-# Clicks Animations
+# Seeing around
 
-You can add `v-click` to elements to add a click animation.
+`ls` shows the list of what's in this folder.
 
-<div v-click>
+Lots of flags, we'll see some of them (`l`, `h`, `t`, `a`, `r`, `S`).
 
-This shows up when you click the slide:
+As a side note: all flags preceded by a single dash can be combined, two dashes cannot:
 
-```html
-<div v-click>This shows up when you click the slide.</div>
-```
+`ls -lht` is equivalent to `ls -l -h -t`, each letter has its meaning
 
-</div>
+With two dashes like `ls --help` this does not apply. This convention is used pretty much everywhere.
 
-<br>
+With folders, `ls` is the size of the **metadata** not the whole content.
 
-<v-click>
+For that there's another command (`du`, we'll see later)
 
-The <span v-mark.red="3"><code>v-mark</code> directive</span>
-also allows you to add
-<span v-mark.circle.orange="4">inline marks</span>
-, powered by [Rough Notation](https://roughnotation.com/):
-
-```html
-<span v-mark.underline.orange>inline markers</span>
-```
-
-</v-click>
-
-<div mt-20 v-click>
-
-[Learn more](https://sli.dev/guide/animations#click-animation)
-
-</div>
+You can filter a bit: `ls *.pdf`
 
 ---
 
-# Motions
+# du and df
 
-Motion animations are powered by [@vueuse/motion](https://motion.vueuse.org/), triggered by `v-motion` directive.
+For total folder size use `du`
 
-```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }"
-  :click-3="{ x: 80 }"
-  :leave="{ x: 1000 }"
->
-  Slidev
-</div>
+```bash
+jacopo@flat2:~$ du -sh Documents/
+183G    Documents/
 ```
 
-<div class="w-60 relative">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-square.png"
-      alt=""
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-circle.png"
-      alt=""
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-triangle.png"
-      alt=""
-    />
-  </div>
+for disks use `df`:
 
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
-
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
-</script>
-
-<div
-  v-motion
-  :initial="{ x:35, y: 30, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
-
-[Learn more](https://sli.dev/guide/animations.html#motion)
-
-</div>
-
----
-
-# $\LaTeX$
-
-$\LaTeX$ is supported out-of-box. Powered by [$\KaTeX$](https://katex.org/).
-
-<div h-3 />
-
-Inline $\sqrt{3x-1}+(1+x)^2$
-
-Block
-$$ {1|3|all}
-\begin{aligned}
-\nabla \cdot \vec{E} &= \frac{\rho}{\varepsilon_0} \\
-\nabla \cdot \vec{B} &= 0 \\
-\nabla \times \vec{E} &= -\frac{\partial\vec{B}}{\partial t} \\
-\nabla \times \vec{B} &= \mu_0\vec{J} + \mu_0\varepsilon_0\frac{\partial\vec{E}}{\partial t}
-\end{aligned}
-$$
-
-[Learn more](https://sli.dev/features/latex)
-
----
-
-# Diagrams
-
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
-
-<div class="grid grid-cols-4 gap-5 pt-4 -mb-6">
-
-```mermaid {scale: 0.5, alt: 'A simple sequence diagram'}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
-```
-
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
-
-```mermaid
-mindmap
-  root((mindmap))
-    Origins
-      Long history
-      ::icon(fa fa-book)
-      Popularisation
-        British popular psychology author Tony Buzan
-    Research
-      On effectiveness<br/>and features
-      On Automatic creation
-        Uses
-            Creative techniques
-            Strategic planning
-            Argument mapping
-    Tools
-      Pen and paper
-      Mermaid
-```
-
-```plantuml {scale: 0.7}
-@startuml
-
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
-```
-
-</div>
-
-Learn more: [Mermaid Diagrams](https://sli.dev/features/mermaid) and [PlantUML Diagrams](https://sli.dev/features/plantuml)
-
----
-foo: bar
-dragPos:
-  square: 691,32,167,_,-16
----
-
-# Draggable Elements
-
-Double-click on the draggable elements to edit their positions.
-
-<br>
-
-###### Directive Usage
-
-```md
-<img v-drag="'square'" src="https://sli.dev/logo.png">
-```
-
-<br>
-
-###### Component Usage
-
-```md
-<v-drag text-3xl>
-  <div class="i-carbon:arrow-up" />
-  Use the `v-drag` component to have a draggable container!
-</v-drag>
-```
-
-<v-drag pos="663,206,261,_,-15">
-  <div text-center text-3xl border border-main rounded>
-    Double-click me!
-  </div>
-</v-drag>
-
-<img v-drag="'square'" src="https://sli.dev/logo.png">
-
-###### Draggable Arrow
-
-```md
-<v-drag-arrow two-way />
-```
-
-<v-drag-arrow pos="67,452,253,46" two-way op70 />
-
----
-src: ./pages/imported-slides.md
-hide: false
----
-
----
-
-# Monaco Editor
-
-Slidev provides built-in Monaco Editor support.
-
-Add `{monaco}` to the code block to turn it into an editor:
-
-```ts {monaco}
-import { ref } from 'vue'
-import { emptyArray } from './external'
-
-const arr = ref(emptyArray(10))
-```
-
-Use `{monaco-run}` to create an editor that can execute the code directly in the slide:
-
-```ts {monaco-run}
-import { version } from 'vue'
-import { emptyArray, sayHello } from './external'
-
-sayHello()
-console.log(`vue ${version}`)
-console.log(emptyArray<number>(10).reduce(fib => [...fib, fib.at(-1)! + fib.at(-2)!], [1, 1]))
+```bash
+jacopo@flat2:~$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/dm-0       952G  466G  483G  50% /
+...more lines here...
+devtmpfs         24G     0   24G   0% /dev
 ```
 
 ---
-layout: center
-class: text-center
+
+# Create a directory or a file
+
+`mkdir` makes a directory
+
+It wants to create one at a time, you can create multiple with the `-p` flag (p for "path").
+
+`touch` creates an empty file or updates the last modification date of existing ones.
+
 ---
 
-# Learn More
+# Shell expansions
 
-[Documentation](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/resources/showcases)
 
-<PoweredBySlidev mt-10 />
+Nice trick:
+
+`mkdir -p {2026..2030}/{01..12}` creates a whole structure and it has proper trailing 0s.
+
+This `{...}` syntax is called "brace expansion" and can be applied to many other commands.
+
+Many others in the [documentation](https://www.gnu.org/software/bash/manual/html_node/Shell-Expansions.html).
+
+---
+
+# Arguments and shell expansions
+
+These expansions are done by the shell, the program does not see them but only the result
+
+```python
+import sys
+# argv is for argument vector
+print(sys.argv)
+```
+
+example:
+
+
+```bash
+$ python script.py {1..7}
+['script.py', '1', '2', '3', '4', '5', '6', '7']
+```
+
+
+---
+
+# Copy and move
+
+The `cp` command copies, while `mv` moves.
+
+To copy folders use `cp -r` (r=recursive).
+
+Moving is also used to rename (basically "moving to another name").
+
+Moving to an existing path deletes the original!
+
+Both accept the `-v` (v=verbose) flag to see what they are doing.
+
+---
+
+# Deleting
+
+`rmdir` can delete a folder, but only if it's empty.
+
+`rm` can delete files and folders. There is no trash bin!
+
+* `rm -r` deletes recursively
+* `rm -v` shows what is happening
+* `rm -f` does not ask to confirm
+
+---
+
+# find
+
+To get all the files under a directory:
+
+`find .`
+
+can filter by name, date, depth, and pretty much everything.
+
+---
+
+# Finally, files
+
+
+Download the file (there's a copy button on the border)
+
+
+```
+wget https://gist.githubusercontent.com/jacopofar/804c5694ac12a9d6fde653b5a6e3b983/raw/8ffd027bf5e9b1184695e1e55798f699e6acda74/countries_capitals.tsv
+```
+
+or if `wget` is not present:
+
+```
+curl https://gist.githubusercontent.com/jacopofar/804c5694ac12a9d6fde653b5a6e3b983/raw/8ffd027bf5e9b1184695e1e55798f699e6acda74/countries_capitals.tsv > countries_capitals.tsv
+``` 
+
+now you can see a new file `countries_capitals.tsv`.
+
+Interesting fact: `wget -r https://somesite.com` can download a whole website by following links.
+
+---
+
+# What did we just download?
+
+`cat` dumps the whole file to the screen.
+
+`wc` counts lines, characters and "words".
+
+`head`/`tail` show the first and last 10 lines.
+
+`less` visualizes it better (Q to quit)
+
+---
+
+# grep 
+
+To search into a file:
+
+`grep Italy countries_capitals.tsv`
+
+case insensitive:
+
+`grep -i den countries_capitals.tsv`
+
+inverse search:
+
+`grep -iv a countries_capitals.tsv`
+
+
+---
+
+# vim / vi
+
+Depending on your system you may have issues with it sooner or later.
+
+`vim` is a command-line editor, in some cases the only one (e.g. on a server) and could be opened for you.
+Since it's not intuitive at all, let's see the basics not to get stuck.
+
+* When opening it, you are in **command mode**. Press <kbd>i</kbd> for insert mode
+* In **insert mode**, press <kbd>ESC</kbd> for the command mode
+* To save and quit `:wq` (the colon is included!)
+* To quit without saving `:q!` (colon and exclamation mark are included!)
+
+it can be quite powerful, but I do NOT suggest learning it now. I usually use it in the lesson to avoid switching window.
+
+Sometimes your system has `nano` instead, much simpler, use <kbd>Ctrl + X</kbd> to exit it.
+
+
+---
+
+# STDIN, STDOUT, STDERR
+
+Every process has a stream of data in input and two in output.
+
+---
+
+# The UNIX philosophy
+
+UNIX systems had one design philosophy: provide many tools doing one and only one thing, and doing it well, plus ways to combine them.
+
+Use `|` to send the standard output of a process as the input of another.
+
+Use `>` or `>>` to send the output to a file.
+
+Examples: 
+
+* how many countries contain the letter f?
+* how many files in this folder/subfolders are PDFs?
+
+---
+
+# echo
+
+
+`echo` is the same as `print` in Python. Useful combined with other commands:
+
+`echo hello >> greetings.txt`
+`echo hello again >> greetings.txt`
+
+
+---
