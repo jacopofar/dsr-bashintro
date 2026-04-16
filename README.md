@@ -13,4 +13,3 @@ To start the slide show:
 
 Edit the  to see the changes. You can generate a PDF using `npm run export`
 
-Learn more about Slidev at the [documentation](https://sli.dev/).
