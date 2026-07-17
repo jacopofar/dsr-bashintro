@@ -47,7 +47,7 @@ h1 {
 
 # Bash and the UNIX-like command line
 
-Jacopo Farina 
+Jacopo Farina
 @ Data Science Retreat
 ---
 
@@ -77,12 +77,12 @@ Often in documentation a `$` prefix indicates that a command is for the shell. `
 # Your shell
 
 We call the class `Bash` but it's one of the possible command-line interpreters. `ZSH` is also very common (the default on macOS).
-The differences are minimal for most uses and we don't really mind, you can install more and switch.
+The differences are minimal for most uses and we don't really mind; you can install more and switch.
 
 Also, you will notice that the string on the side in the terminal, called **prompt**, is different across OS and settings. It also does
 not matter and can be configured.
 
-On ZSH you may get a nicer configuration by installing `oh-mz-zsh` (but don't do it now!).
+On ZSH you may get a nicer configuration by installing `oh-my-zsh` (but don't do it now!).
 
 The system shell, like the Python one, follows the REPL approach.
 
@@ -100,7 +100,7 @@ The system shell, like the Python one, follows the REPL approach.
 | <kbd>Ctrl + C</kbd>                          | Empties the line / stops the program  |
 | <kbd>Ctrl + D</kbd>                          | Quits                                 |
 | <kbd>up</kbd>/<kbd>down</kbd>                | Retrieve previous commands            |
-| <kbd>page up</kbd>/<kbd>page down</kbd>      | Same but with prefix                  |       
+| <kbd>page up</kbd>/<kbd>page down</kbd>      | Same but with prefix (depends on settings)                 |
 | <kbd>Ctrl + R</kbd>                          | Searches in command history           |
 | <kbd>tab</kbd>                               | AUTOCOMPLETION!                       |
 
@@ -115,11 +115,11 @@ You can get a fancier command search with **atuin** and record your sessions wit
 
 Like in an IDE or in Jupyter, the tab key does autocomplete. **Get used to it!**
 
-Not only it saves time which is always nice, but prevents many mistakes. The suggestions are contextual, and apply to **filenames** too. If you are running a command on a file with a long name you avoid typos and avoid wasting time on it. Win-win!
+Not only does it save time which is always nice, but prevents many mistakes. The suggestions are contextual, and apply to **filenames** too. If you are running a command on a file with a long name you avoid typos and avoid wasting time on it. Win-win!
 
 Try it now: run the command `whoami` but don't write all of it, only the beginning.
 
-Depending on your system, pressing tab multiple time will show all possible completions or iterate over them.
+Depending on your system, pressing tab multiple times will show all possible completions or iterate over them.
 
 ---
 
@@ -190,7 +190,7 @@ As a side note: all flags preceded by a single dash can be combined, two dashes 
 
 With two dashes like `ls --help` this does not apply. This convention is used pretty much everywhere.
 
-With folders, `ls` is the size of the **metadata** not the whole content.
+With folders, `ls -l` shows the size of the **metadata** not the whole content.
 
 For that there's another command (`du`, we'll see later)
 
@@ -223,7 +223,7 @@ devtmpfs         24G     0   24G   0% /dev
 
 `mkdir` makes a directory
 
-It wants to create one at a time, you can create multiple with the `-p` flag (p for "path").
+It wants to create one at a time, you can create multiple with the `-p` flag (p for "parents").
 
 `touch` creates an empty file or updates the last modification date of existing ones.
 
@@ -271,7 +271,7 @@ To copy folders use `cp -r` (r=recursive).
 
 Moving is also used to rename (basically "moving to another name").
 
-Moving to an existing path deletes the original!
+Moving to an existing path deletes the overwrites (destroy) the destination!
 
 Both accept the `-v` (v=verbose) flag to see what they are doing.
 
@@ -313,7 +313,7 @@ or if `wget` is not present:
 
 ```
 curl https://gist.githubusercontent.com/jacopofar/804c5694ac12a9d6fde653b5a6e3b983/raw/8ffd027bf5e9b1184695e1e55798f699e6acda74/countries_capitals.tsv > countries_capitals.tsv
-``` 
+```
 
 now you can see a new file `countries_capitals.tsv`.
 
@@ -333,7 +333,7 @@ Interesting fact: `wget -r https://somesite.com` can download a whole website by
 
 ---
 
-# grep 
+# grep
 
 To search into a file:
 
@@ -357,7 +357,7 @@ Depending on your system you may have issues with it sooner or later.
 `vim` is a command-line editor, in some cases the only one (e.g. on a server) and could be opened for you.
 Since it's not intuitive at all, let's see the basics not to get stuck.
 
-* When opening it, you are in **command mode**. Press <kbd>i</kbd> for insert mode
+* When opening it, you are in **normal (command) mode**. Press <kbd>i</kbd> for insert mode
 * In **insert mode**, press <kbd>ESC</kbd> for the command mode
 * To save and quit `:wq` (the colon is included!)
 * To quit without saving `:q!` (colon and exclamation mark are included!)
@@ -383,7 +383,7 @@ Use `|` to send the standard output of a process as the input of another.
 
 Use `>` or `>>` to send the output to a file.
 
-Examples: 
+Examples:
 
 * how many countries contain the letter f?
 * how many files in this folder/subfolders are PDFs?
