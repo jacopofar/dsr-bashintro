@@ -400,3 +400,7 @@ Examples:
 
 
 ---
+
+To go deeper: GNU core utilities
+
+https://en.wikipedia.org/wiki/GNU_Core_Utilities
